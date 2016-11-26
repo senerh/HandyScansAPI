@@ -1,0 +1,2 @@
+# HandyScansAPI
+API for scans
