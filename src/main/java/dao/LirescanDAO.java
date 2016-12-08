@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import util.SlugUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class LirescanDAO implements ScanDAO {
         for (Element element : elements) {
             String slug = element.attr("href");
             slug = slug.replace("/", "");
-            MangaDTO mangaDTO = new MangaDTO(slug, slug);
+            MangaDTO mangaDTO = new MangaDTO(SlugUtil.lirescanSlugToSlug(slug), SlugUtil.lirescanSlugToName(slug));
             mangaDTOList.add(mangaDTO);
         }
 
