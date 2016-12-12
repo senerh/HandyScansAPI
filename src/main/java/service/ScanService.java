@@ -10,7 +10,7 @@ import java.util.List;
 public class ScanService extends AbstractService {
 
     public List<ScanDTO> getScanDTOList(String manga) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(SlugUtil.slugToLirescanSlug(manga), SlugUtil.slugToName(manga));
+        MangaDTO mangaDTO = new MangaDTO(SlugUtil.slugToScanSlug(manga), SlugUtil.slugToName(manga));
         return scanDAO.getScanDtoList(mangaDTO);
     }
 }

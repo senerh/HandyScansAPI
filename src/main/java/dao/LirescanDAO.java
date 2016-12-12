@@ -27,7 +27,7 @@ public class LirescanDAO implements ScanDAO {
         for (Element element : elements) {
             String slug = element.attr("href");
             slug = slug.replace("/", "");
-            MangaDTO mangaDTO = new MangaDTO(SlugUtil.lirescanSlugToSlug(slug), SlugUtil.lirescanSlugToName(slug));
+            MangaDTO mangaDTO = new MangaDTO(SlugUtil.scanSlugToSlug(slug), SlugUtil.scanSlugToName(slug));
             mangaDTOList.add(mangaDTO);
         }
 
