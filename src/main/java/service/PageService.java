@@ -11,7 +11,7 @@ import java.util.List;
 public class PageService extends AbstractService {
 
     public List<PageDTO> getPageDTOList(String manga, String scan) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(SlugUtil.slugToScanSlug(manga), SlugUtil.slugToName(manga));
+        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
         ScanDTO scanDTO = new ScanDTO(scan);
         return scanDAO.getPageDtoList(mangaDTO, scanDTO);
     }
