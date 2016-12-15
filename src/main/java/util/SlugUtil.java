@@ -1,22 +1,27 @@
 package util;
 
+import dto.MangaDTO;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class SlugUtil {
 
-    public static String slugToLirescanSlug(String slug) {
+    public static String slugToScanSlug(String slug) {
         return slug + "-lecture-en-ligne";
     }
 
-    public static String lirescanSlugToSlug(String lirescanSlug) {
+    public static String scanSlugToSlug(String lirescanSlug) {
         return lirescanSlug.replace("-lecture-en-ligne", "");
     }
 
-    public static String lirescanSlugToName(String lirescanSlug) {
-        return WordUtils.capitalize(lirescanSlugToSlug(lirescanSlug).replace('-', ' '));
+    public static String scanSlugToName(String lirescanSlug) {
+        return WordUtils.capitalize(scanSlugToSlug(lirescanSlug).replace('-', ' '));
     }
 
     public static String slugToName(String slug) {
         return WordUtils.capitalize(slug.replace('-', ' '));
+    }
+
+    public static MangaDTO slugToMangaDTO(String slug) {
+        return new MangaDTO(slug, slugToName(slug));
     }
 }

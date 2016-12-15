@@ -16,7 +16,7 @@ import java.util.List;
 
 public class LirescanDAO implements ScanDAO {
 
-    private static final String LIRE_SCAN_URL = "http://www.lirescan.net";
+    public static final String LIRE_SCAN_URL = "http://www.lirescan.net";
 
     public List<MangaDTO> getMangaDtoList() throws IOException {
         List<MangaDTO> mangaDTOList = new ArrayList<MangaDTO>();
@@ -27,7 +27,7 @@ public class LirescanDAO implements ScanDAO {
         for (Element element : elements) {
             String slug = element.attr("href");
             slug = slug.replace("/", "");
-            MangaDTO mangaDTO = new MangaDTO(SlugUtil.lirescanSlugToSlug(slug), SlugUtil.lirescanSlugToName(slug));
+            MangaDTO mangaDTO = new MangaDTO(SlugUtil.scanSlugToSlug(slug), SlugUtil.scanSlugToName(slug));
             mangaDTOList.add(mangaDTO);
         }
 
@@ -37,7 +37,7 @@ public class LirescanDAO implements ScanDAO {
     public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException {
         List<ScanDTO> scanDTOList = new ArrayList<ScanDTO>();
 
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + mangaDTO.getSlug() + "/").userAgent("Mozilla").get();
+        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/").userAgent("Mozilla").get();
         Elements elements = document.select("select#chapitres option");
 
         for (Element element : elements) {
@@ -51,7 +51,7 @@ public class LirescanDAO implements ScanDAO {
     public List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException {
         List<PageDTO> pageDTOList = new ArrayList<PageDTO>();
 
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + mangaDTO.getSlug() + "/" + scanDTO.getNum() + "/").userAgent("Mozilla").get();
+        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/" + scanDTO.getNum() + "/").userAgent("Mozilla").get();
         Elements elements = document.select("nav#pagination a:not([id],[style])");
 
         pageDTOList.add(new PageDTO("1"));
@@ -64,7 +64,7 @@ public class LirescanDAO implements ScanDAO {
     }
 
     public ImageDTO getImageDto(MangaDTO mangaDTO, ScanDTO scanDTO, PageDTO pageDTO) throws IOException {
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + mangaDTO.getSlug() + "/" + scanDTO.getNum() + "/" + pageDTO.getNum()).userAgent("Mozilla").get();
+        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/" + scanDTO.getNum() + "/" + pageDTO.getNum()).userAgent("Mozilla").get();
         String url = LIRE_SCAN_URL + document.select("a#imglink img").attr("src");
         ImageDTO imageDTO = new ImageDTO(url);
         return imageDTO;
