@@ -3,5 +3,4 @@ script: mvn test
 jdk:
   - oraclejdk8
 after_success:
-  - mvn install -DskipTests
   - "curl -p --insecure \"ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/\" --user \"$DEPLOY_USERNAME:$DEPLOY_PASSWORD\" -T \"$LOCAL_WAR\" --ftp-create-dirs"
