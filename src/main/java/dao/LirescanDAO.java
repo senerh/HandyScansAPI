@@ -22,12 +22,13 @@ public class LirescanDAO implements ScanDAO {
         List<MangaDTO> mangaDTOList = new ArrayList<MangaDTO>();
 
         Document document = Jsoup.connect(LIRE_SCAN_URL).userAgent("Mozilla").get();
-        Elements elements = document.select("div#like a");
+        Elements elements = document.select("select#mangas option");
 
         for (Element element : elements) {
-            String slug = element.attr("href");
-            slug = slug.replace("/", "");
-            MangaDTO mangaDTO = new MangaDTO(SlugUtil.scanSlugToSlug(slug), SlugUtil.scanSlugToName(slug));
+            String scanSlug = element.attr("value");
+            scanSlug = scanSlug.split("/")[1];
+            String slug = SlugUtil.scanSlugToSlug(scanSlug);
+            MangaDTO mangaDTO = SlugUtil.slugToMangaDTO(slug);
             mangaDTOList.add(mangaDTO);
         }
 

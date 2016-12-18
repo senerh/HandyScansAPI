@@ -13,10 +13,6 @@ public class SlugUtil {
         return lirescanSlug.replace("-lecture-en-ligne", "");
     }
 
-    public static String scanSlugToName(String lirescanSlug) {
-        return WordUtils.capitalize(scanSlugToSlug(lirescanSlug).replace('-', ' '));
-    }
-
     public static String slugToName(String slug) {
         return WordUtils.capitalize(slug.replace('-', ' '));
     }
