@@ -3,4 +3,5 @@ script: mvn test
 jdk:
   - oraclejdk8
 after_success:
+  - chmod a+x ./deploy.sh
   - ./deploy.sh
