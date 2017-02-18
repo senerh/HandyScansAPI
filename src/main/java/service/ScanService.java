@@ -13,4 +13,9 @@ public class ScanService extends AbstractService {
         MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
         return scanDAO.getScanDtoList(mangaDTO);
     }
+
+    public ScanDTO getLastScanDTO(String manga) throws IOException {
+        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
+        return scanDAO.getLastScanDto(mangaDTO);
+    }
 }
