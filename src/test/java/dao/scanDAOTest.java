@@ -1,6 +1,7 @@
 package dao;
 
 import dto.MangaDTO;
+import dto.ScanDTO;
 import org.junit.Test;
 import util.ConstantUtil;
 
@@ -34,6 +35,18 @@ public class scanDAOTest {
             scanDAO.getScanDtoList(ConstantUtil.MANGA_DTO);
         } catch (IOException e) {
             fail("The scan for <~" + ConstantUtil.MANGA_DTO + "~> is unreachable.");
+        }
+    }
+
+    @Test
+    public void getLastScanDTO() {
+        try {
+            ScanDTO scanDTO = scanDAO.getLastScanDto(ConstantUtil.MANGA_DTO);
+            if (scanDTO.compareTo(ConstantUtil.SCAN_DTO) < 0) {
+                fail("<~" + scanDTO + "~> should be greater than <~" + ConstantUtil.MANGA_DTO + "~>.");
+            }
+        } catch (IOException e) {
+            fail("The last scan for <~" + ConstantUtil.MANGA_DTO + "~> is unreachable.");
         }
     }
 

@@ -49,6 +49,15 @@ public class LirescanDAO implements ScanDAO {
         return scanDTOList;
     }
 
+    public ScanDTO getLastScanDto(MangaDTO mangaDTO) throws IOException {
+        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/").userAgent("Mozilla").get();
+        String string = document.select("select#chapitres option[selected]").text();
+        if (string == null || string.equals("")) {
+            throw new IOException("Cannot get the last scan for <~" + mangaDTO + "~>. The selected string is empty.");
+        }
+        return new ScanDTO(string);
+    }
+
     public List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException {
         List<PageDTO> pageDTOList = new ArrayList<PageDTO>();
 

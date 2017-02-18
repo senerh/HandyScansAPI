@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ScanDTO {
+public class ScanDTO implements Comparable<ScanDTO> {
 
     private String num;
 
@@ -47,5 +47,9 @@ public class ScanDTO {
         return "ScanDTO{" +
                 "num='" + num + '\'' +
                 '}';
+    }
+
+    public int compareTo(ScanDTO o) {
+        return Float.compare(Float.parseFloat(num), Float.parseFloat(o.num));
     }
 }

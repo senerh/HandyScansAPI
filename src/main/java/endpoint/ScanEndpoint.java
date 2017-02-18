@@ -26,4 +26,11 @@ public class ScanEndpoint {
         return scanService.getScanDTOList(manga);
     }
 
+    @GET
+    @Path("/last")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ScanDTO getLastScanDTO(@PathParam("manga") String manga) throws IOException {
+        return scanService.getLastScanDTO(manga);
+    }
+
 }
