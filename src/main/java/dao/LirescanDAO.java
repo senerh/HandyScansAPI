@@ -1,9 +1,6 @@
 package dao;
 
-import dto.ImageDTO;
-import dto.MangaDTO;
-import dto.PageDTO;
-import dto.ScanDTO;
+import dto.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,6 +30,26 @@ public class LirescanDAO implements ScanDAO {
         }
 
         return mangaDTOList;
+    }
+
+    public List<MangaLastScanDTO> getMangaLastScanDtoList() throws IOException {
+        List<MangaLastScanDTO> mangaLastScanDTOList = new ArrayList<MangaLastScanDTO>();
+
+        Document document = Jsoup.connect(LIRE_SCAN_URL).userAgent("Mozilla").get();
+        Elements elements = document.select("select#mangas option");
+
+        for (Element element : elements) {
+            String value = element.attr("value");
+            String[] values = value.split("/");
+            String scanSlug = values[1];
+            String lastScan = values[2];
+            String slug = SlugUtil.scanSlugToSlug(scanSlug);
+            MangaDTO mangaDTO = SlugUtil.slugToMangaDTO(slug);
+            ScanDTO scanDTO = new ScanDTO(lastScan);
+            mangaLastScanDTOList.add(new MangaLastScanDTO(mangaDTO, scanDTO));
+        }
+
+        return mangaLastScanDTOList;
     }
 
     public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException {

@@ -1,9 +1,6 @@
 package dao;
 
-import dto.ImageDTO;
-import dto.MangaDTO;
-import dto.PageDTO;
-import dto.ScanDTO;
+import dto.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +8,8 @@ import java.util.List;
 public interface ScanDAO {
 
     public List<MangaDTO> getMangaDtoList() throws IOException;
+
+    public List<MangaLastScanDTO> getMangaLastScanDtoList() throws IOException;
 
     public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException;
 
