@@ -2,40 +2,50 @@ package dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MangaLastScanDTO {
 
-    private MangaDTO mangaDTO;
-
-    private ScanDTO scanDTO;
-
+    private String slug;
+    private String name;
+    @XmlElement(name = "last_scan")
+    private String lastScan;
 
     public MangaLastScanDTO() {
 
     }
 
-    public MangaLastScanDTO(MangaDTO mangaDTO, ScanDTO scanDTO) {
-        this.mangaDTO = mangaDTO;
-        this.scanDTO = scanDTO;
+    public MangaLastScanDTO(String slug, String name, String lastScan) {
+        this.slug = slug;
+        this.name = name;
+        this.lastScan = lastScan;
     }
 
-    public MangaDTO getMangaDTO() {
-        return mangaDTO;
+    public String getSlug() {
+        return slug;
     }
 
-    public void setMangaDTO(MangaDTO mangaDTO) {
-        this.mangaDTO = mangaDTO;
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
-    public ScanDTO getScanDTO() {
-        return scanDTO;
+    public String getName() {
+        return name;
     }
 
-    public void setScanDTO(ScanDTO scanDTO) {
-        this.scanDTO = scanDTO;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastScan() {
+        return lastScan;
+    }
+
+    public void setLastScan(String lastScan) {
+        this.lastScan = lastScan;
     }
 
     @Override
@@ -45,23 +55,26 @@ public class MangaLastScanDTO {
 
         MangaLastScanDTO that = (MangaLastScanDTO) o;
 
-        if (mangaDTO != null ? !mangaDTO.equals(that.mangaDTO) : that.mangaDTO != null) return false;
-        return scanDTO != null ? scanDTO.equals(that.scanDTO) : that.scanDTO == null;
+        if (slug != null ? !slug.equals(that.slug) : that.slug != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return lastScan != null ? lastScan.equals(that.lastScan) : that.lastScan == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = mangaDTO != null ? mangaDTO.hashCode() : 0;
-        result = 31 * result + (scanDTO != null ? scanDTO.hashCode() : 0);
+        int result = slug != null ? slug.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lastScan != null ? lastScan.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "MangaLastScanDTO{" +
-                "mangaDTO=" + mangaDTO +
-                ", scanDTO=" + scanDTO +
+                "slug='" + slug + '\'' +
+                ", name='" + name + '\'' +
+                ", lastScan='" + lastScan + '\'' +
                 '}';
     }
 }

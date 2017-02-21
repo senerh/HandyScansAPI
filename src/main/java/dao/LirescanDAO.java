@@ -45,8 +45,7 @@ public class LirescanDAO implements ScanDAO {
             String lastScan = values[2];
             String slug = SlugUtil.scanSlugToSlug(scanSlug);
             MangaDTO mangaDTO = SlugUtil.slugToMangaDTO(slug);
-            ScanDTO scanDTO = new ScanDTO(lastScan);
-            mangaLastScanDTOList.add(new MangaLastScanDTO(mangaDTO, scanDTO));
+            mangaLastScanDTOList.add(new MangaLastScanDTO(mangaDTO.getSlug(), mangaDTO.getName(), lastScan));
         }
 
         return mangaLastScanDTOList;
