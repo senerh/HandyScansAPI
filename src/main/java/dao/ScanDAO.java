@@ -9,7 +9,7 @@ public interface ScanDAO {
 
     public List<MangaDTO> getMangaDtoList() throws IOException;
 
-    public List<MangaLastScanDTO> getMangaLastScanDtoList() throws IOException;
+    public List<FullMangaDTO> getFullMangaDtoList() throws IOException;
 
     public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException;
 

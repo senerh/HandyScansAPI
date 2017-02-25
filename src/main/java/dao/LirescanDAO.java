@@ -32,23 +32,44 @@ public class LirescanDAO implements ScanDAO {
         return mangaDTOList;
     }
 
-    public List<MangaLastScanDTO> getMangaLastScanDtoList() throws IOException {
-        List<MangaLastScanDTO> mangaLastScanDTOList = new ArrayList<MangaLastScanDTO>();
+    public List<FullMangaDTO> getFullMangaDtoList() throws IOException {
+        List<FullMangaDTO> fullMangaDTOList = new ArrayList<FullMangaDTO>();
 
-        Document document = Jsoup.connect(LIRE_SCAN_URL).userAgent("Mozilla").get();
-        Elements elements = document.select("select#mangas option");
+        Document document = Jsoup.connect(LIRE_SCAN_URL + "/ace-of-diamond-lecture-en-ligne/").userAgent("Mozilla").get();
+        Elements elements = document.select("div#images div");
 
-        for (Element element : elements) {
-            String value = element.attr("value");
-            String[] values = value.split("/");
-            String scanSlug = values[1];
-            String lastScan = values[2];
-            String slug = SlugUtil.scanSlugToSlug(scanSlug);
-            MangaDTO mangaDTO = SlugUtil.slugToMangaDTO(slug);
-            mangaLastScanDTOList.add(new MangaLastScanDTO(mangaDTO.getSlug(), mangaDTO.getName(), lastScan));
+        Elements aceOfDiamondElements = document.select("select#mangas option[selected]");
+        String lastScanString = aceOfDiamondElements.get(0).attr("value").split("/")[2];
+        FullMangaDTO aceOfDiamond = new FullMangaDTO(
+                "ace-of-diamond",
+                "Ace Of Diamond",
+                lastScanString,
+                "http://www.lirescan.net/images/mangas/ace-of-diamond.jpg");
+        fullMangaDTOList.add(aceOfDiamond);
+
+        if (!aceOfDiamondElements.get(0).text().equals(aceOfDiamond.getName())) {
+            throw new IOException("The retrived manga should be <~Ace of Diamond~> but is <~" +
+                    aceOfDiamondElements.get(0).text() +
+                    "~>.");
         }
 
-        return mangaLastScanDTOList;
+        for (Element element : elements) {
+            Element e1 = element.child(0);
+
+            String scanSlug = e1.attr("href").split("/")[1];
+            String slug = SlugUtil.scanSlugToSlug(scanSlug);
+            String name = e1.child(0).attr("alt");
+            String url = LIRE_SCAN_URL + e1.child(0).attr("src");
+
+            Element e2 = element.child(1).child(0);
+            String[] tString = e2.text().split(" ");
+            String lastScan = tString[tString.length - 1];
+
+            FullMangaDTO fullMangaDTO = new FullMangaDTO(slug, name, lastScan, url);
+            fullMangaDTOList.add(fullMangaDTO);
+        }
+
+        return fullMangaDTOList;
     }
 
     public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException {
