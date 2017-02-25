@@ -1,7 +1,7 @@
 package service;
 
+import dto.FullMangaDTO;
 import dto.MangaDTO;
-import dto.MangaLastScanDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,7 +12,7 @@ public class MangaService extends AbstractService {
         return scanDAO.getMangaDtoList();
     }
 
-    public List<MangaLastScanDTO> getMangaLastScanDTOList() throws IOException {
-        return scanDAO.getMangaLastScanDtoList();
+    public List<FullMangaDTO> getFullMangaDTOList() throws IOException {
+        return scanDAO.getFullMangaDtoList();
     }
 }

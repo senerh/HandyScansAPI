@@ -1,7 +1,7 @@
 package dao;
 
+import dto.FullMangaDTO;
 import dto.MangaDTO;
-import dto.MangaLastScanDTO;
 import dto.ScanDTO;
 import org.junit.Test;
 import util.ConstantUtil;
@@ -32,12 +32,11 @@ public class scanDAOTest {
 
     @Test
     public void getMangaLastScanDtoList() {
-        //TODO: terminer le test unitaire
         try {
-            List<MangaLastScanDTO> mangaLastScanDTOList = scanDAO.getMangaLastScanDtoList();
-            assertTrue("The retrieved manga list does not contain any element.", mangaLastScanDTOList.size() > 0);
+            List<FullMangaDTO> fullMangaDTOList = scanDAO.getFullMangaDtoList();
+            assertTrue("The retrieved manga list does not contain any element.", fullMangaDTOList.size() > 0);
         } catch (IOException e) {
-            fail("The website '" + LirescanDAO.LIRE_SCAN_URL + "' is probably down.");
+            fail("The website '" + LirescanDAO.LIRE_SCAN_URL + "' is probably down.\n" + e);
         }
     }
 

@@ -1,6 +1,6 @@
 package endpoint;
 
-import dto.MangaLastScanDTO;
+import dto.FullMangaDTO;
 import service.MangaService;
 
 import javax.ws.rs.GET;
@@ -10,18 +10,18 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
 
-@Path("/mangalastscans")
-public class MangaLastScanEndpoint {
+@Path("/fullmangas")
+public class FullMangaEndpoint {
 
     private MangaService mangaService;
 
-    public MangaLastScanEndpoint() {
+    public FullMangaEndpoint() {
         mangaService = new MangaService();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MangaLastScanDTO> getMangaLastScanDTOList() throws IOException {
-        return mangaService.getMangaLastScanDTOList();
+    public List<FullMangaDTO> getFullMangaDTOList() throws IOException {
+        return mangaService.getFullMangaDTOList();
     }
 }
