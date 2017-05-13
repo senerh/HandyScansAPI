@@ -2,20 +2,22 @@ package dao;
 
 import dto.*;
 
+import javax.ejb.Local;
 import java.io.IOException;
 import java.util.List;
 
+@Local
 public interface ScanDAO {
 
-    public List<MangaDTO> getMangaDtoList() throws IOException;
+    List<MangaDTO> getMangaDtoList() throws IOException;
 
-    public List<FullMangaDTO> getFullMangaDtoList() throws IOException;
+    List<FullMangaDTO> getFullMangaDtoList() throws IOException;
 
-    public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException;
+    List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException;
 
-    public ScanDTO getLastScanDto(MangaDTO mangaDTO) throws IOException;
+    ScanDTO getLastScanDto(MangaDTO mangaDTO) throws IOException;
 
-    public List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException;
+    List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException;
 
-    public ImageDTO getImageDto(MangaDTO mangaDTO, ScanDTO scanDTO, PageDTO pageDTO) throws IOException;
+    ImageDTO getImageDto(MangaDTO mangaDTO, ScanDTO scanDTO, PageDTO pageDTO) throws IOException;
 }

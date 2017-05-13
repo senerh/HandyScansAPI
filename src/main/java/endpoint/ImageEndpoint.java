@@ -1,8 +1,9 @@
 package endpoint;
 
 import dto.ImageDTO;
-import service.ImageService;
+import service.ImageServiceLocal;
 
+import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,11 +14,8 @@ import java.io.IOException;
 @Path("/mangas/{manga}/scans/{scan}/pages/{page}/image")
 public class ImageEndpoint {
 
-    private ImageService imageService;
-
-    public ImageEndpoint() {
-        imageService = new ImageService();
-    }
+    @EJB
+    private ImageServiceLocal imageService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

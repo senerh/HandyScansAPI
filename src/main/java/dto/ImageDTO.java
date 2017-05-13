@@ -1,18 +1,10 @@
 package dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ImageDTO {
+public class ImageDTO implements Serializable {
 
     private String url;
-
-    public ImageDTO() {
-
-    }
 
     public ImageDTO(String url) {
         this.url = url;

@@ -1,23 +1,15 @@
 package dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class FullMangaDTO {
+public class FullMangaDTO implements Serializable {
 
     private String slug;
     private String name;
     @XmlElement(name = "last_scan")
     private String lastScan;
     private String url;
-
-    public FullMangaDTO() {
-
-    }
 
     public FullMangaDTO(String slug, String name, String lastScan, String url) {
         this.slug = slug;

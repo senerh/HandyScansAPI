@@ -1,18 +1,10 @@
 package dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class PageDTO {
+public class PageDTO implements Serializable {
 
     private String num;
-
-    public PageDTO() {
-
-    }
 
     public PageDTO(String num) {
         this.num = num;
