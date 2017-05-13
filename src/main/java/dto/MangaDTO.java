@@ -1,19 +1,11 @@
 package dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class MangaDTO {
+public class MangaDTO implements Serializable {
 
     private String slug;
     private String name;
-
-    public MangaDTO() {
-
-    }
 
     public MangaDTO(String slug, String name) {
         this.slug = slug;

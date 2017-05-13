@@ -1,8 +1,9 @@
 package endpoint;
 
 import dto.ScanDTO;
-import service.ScanService;
+import service.ScanServiceLocal;
 
+import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,11 +15,8 @@ import java.util.List;
 @Path("/mangas/{manga}/scans")
 public class ScanEndpoint {
 
-    private ScanService scanService;
-
-    public ScanEndpoint() {
-        scanService = new ScanService();
-    }
+    @EJB
+    private ScanServiceLocal scanService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

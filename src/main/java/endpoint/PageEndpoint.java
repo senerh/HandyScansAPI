@@ -1,8 +1,9 @@
 package endpoint;
 
 import dto.PageDTO;
-import service.PageService;
+import service.PageServiceLocal;
 
+import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,11 +15,8 @@ import java.util.List;
 @Path("/mangas/{manga}/scans/{scan}/pages")
 public class PageEndpoint {
 
-    private PageService pageService;
-
-    public PageEndpoint() {
-        pageService = new PageService();
-    }
+    @EJB
+    private PageServiceLocal pageService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

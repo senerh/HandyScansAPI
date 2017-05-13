@@ -7,10 +7,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.SlugUtil;
 
+import javax.ejb.Stateless;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
 public class LirescanDAO implements ScanDAO {
 
     public static final String LIRE_SCAN_URL = "http://www.lirescan.net";
