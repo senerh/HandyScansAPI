@@ -9,5 +9,7 @@ then
   mv target/shonen-touch-api.war target/shonen-touch-api-dev.war
   curl -p --insecure "ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/" --user "$DEPLOY_USERNAME:$DEPLOY_PASSWORD" -T "target/shonen-touch-api-dev.war" --ftp-create-dirs
 else
-  echo "The work is not deployed because the current branch is neither master nor develop ($TRAVIS_BRANCH)."
+  echo "Starting branch deployment ($TRAVIS_BRANCH)"
+  mv target/shonen-touch-api.war target/shonen-touch-api-branch.war
+  curl -p --insecure "ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/" --user "$DEPLOY_USERNAME:$DEPLOY_PASSWORD" -T "target/shonen-touch-api-branch.war" --ftp-create-dirs
 fi
