@@ -1,16 +1,21 @@
 package dao;
 
-import dto.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.Stateless;
+
+import dto.FullMangaDTO;
+import dto.ImageDTO;
+import dto.MangaDTO;
+import dto.PageDTO;
+import dto.ScanDTO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.SlugUtil;
-
-import javax.ejb.Stateless;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Stateless
 public class LirescanDAO implements ScanDAO {
@@ -40,20 +45,14 @@ public class LirescanDAO implements ScanDAO {
         Document document = Jsoup.connect(LIRE_SCAN_URL + "/ace-of-diamond-lecture-en-ligne/").userAgent("Mozilla").get();
         Elements elements = document.select("div#images div");
 
-        Elements aceOfDiamondElements = document.select("select#mangas option[selected]");
-        String lastScanString = aceOfDiamondElements.get(0).attr("value").split("/")[2];
+        Elements aceOfDiamondElements = document.select("select#chapitres option[selected]");
+        String lastScanString = aceOfDiamondElements.get(0).text();
         FullMangaDTO aceOfDiamond = new FullMangaDTO(
                 "ace-of-diamond",
                 "Ace Of Diamond",
                 lastScanString,
                 "http://www.lirescan.net/images/mangas/ace-of-diamond.jpg");
         fullMangaDTOList.add(aceOfDiamond);
-
-        if (!aceOfDiamondElements.get(0).text().equals(aceOfDiamond.getName())) {
-            throw new IOException("The retrived manga should be <~Ace of Diamond~> but is <~" +
-                    aceOfDiamondElements.get(0).text() +
-                    "~>.");
-        }
 
         for (Element element : elements) {
             Element e1 = element.child(0);
@@ -106,7 +105,9 @@ public class LirescanDAO implements ScanDAO {
         pageDTOList.add(new PageDTO("1"));
         for (Element element : elements) {
             PageDTO pageDTO = new PageDTO(element.text());
-            pageDTOList.add(pageDTO);
+            if (!getImageDto(mangaDTO, scanDTO, pageDTO).getUrl().contains("__Add__")) {
+                pageDTOList.add(pageDTO);
+            }
         }
 
         return pageDTOList;
