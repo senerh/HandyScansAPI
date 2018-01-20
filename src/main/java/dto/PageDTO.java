@@ -6,8 +6,11 @@ public class PageDTO implements Serializable {
 
     private String num;
 
-    public PageDTO(String num) {
+    private String url;
+
+    public PageDTO(String num, String url) {
         this.num = num;
+        this.url = url;
     }
 
     public String getNum() {
@@ -18,6 +21,14 @@ public class PageDTO implements Serializable {
         this.num = num;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,18 +36,23 @@ public class PageDTO implements Serializable {
 
         PageDTO pageDTO = (PageDTO) o;
 
-        return num != null ? num.equals(pageDTO.num) : pageDTO.num == null;
+        if (num != null ? !num.equals(pageDTO.num) : pageDTO.num != null) return false;
+        return url != null ? url.equals(pageDTO.url) : pageDTO.url == null;
+
     }
 
     @Override
     public int hashCode() {
-        return num != null ? num.hashCode() : 0;
+        int result = num != null ? num.hashCode() : 0;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "PageDTO{" +
                 "num='" + num + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }
