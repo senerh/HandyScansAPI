@@ -18,6 +18,4 @@ public interface ScanDAO {
     ScanDTO getLastScanDto(MangaDTO mangaDTO) throws IOException;
 
     List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException;
-
-    ImageDTO getImageDto(MangaDTO mangaDTO, ScanDTO scanDTO, PageDTO pageDTO) throws IOException;
 }

@@ -69,13 +69,4 @@ public class scanDAOTest {
             fail("The page for <~" + ConstantUtil.SCAN_DTO + "~> in <~" + ConstantUtil.MANGA_DTO + "~> is unreachable.");
         }
     }
-
-    @Test
-    public void getImageDto() {
-        try {
-            scanDAO.getImageDto(ConstantUtil.MANGA_DTO, ConstantUtil.SCAN_DTO, ConstantUtil.PAGE_DTO);
-        } catch (IOException e) {
-            fail("The image for <~" + ConstantUtil.PAGE_DTO + "~> in <~" + ConstantUtil.SCAN_DTO + "~> in <~" + ConstantUtil.MANGA_DTO + "~> is unreachable.");
-        }
-    }
 }
