@@ -27,10 +27,12 @@ Restful API based on lirescan.net website which provides scans from several mang
 ### Examples
 | Resource | Result |
 | -- | -- |
-| /mangas | ```[{"slug":"my-manga","name":"My Manga","url":"http://www.foo.bar/my-manga/preview.jpg","last_scan":"3"},{"slug":"your-manga","name":"Your Manga","url":"http://www.foo.bar/your-manga/preview.jpg","last_scan":"17"}``` |
+| /mangas | ```[{"slug":"my-manga","name":"My Manga","lastScan":"3","url":"http://www.foo.bar/my-manga/preview.jpg"},{"slug":"your-manga","name":"Your Manga","lastScan":"17","url":"http://www.foo.bar/your-manga/preview.jpg"}]``` |
+| /mangas/my-manga | ```{"slug":"my-manga","name":"My Manga","lastScan":"3","url":"http://www.foo.bar/my-manga/preview.jpg"}``` |
 | /mangas/my-manga/scans | ```[{"num":"1"},{"num":"2"},{"num":"3"}]``` |
-| /mangas/my-manga/scans/1/pages | ```[{"num":"1"},{"num":"2"},{"num":"3"},{"num":"4"}]``` |
-| /mangas/my-manga/scans/1/pages/1/image | ```{"url":"http://www.foo.bar/my-manga/first-page.jpg"}``` |
+| /mangas/my-manga/scans/1 | ```{"num":"1"}``` |
+| /mangas/my-manga/scans/1/pages | ```[{"num":"1","url":"http://www.foo.bar/my-manga/first-page.jpg"},{"num":"2","url":"http://www.foo.bar/my-manga/second-page.jpg"},{"num":"3","url":"http://www.foo.bar/my-manga/third-page.jpg"},{"num":"4","url":"http://www.foo.bar/my-manga/fourth-page.jpg"}]``` |
+| /mangas/my-manga/scans/1/pages/1 | ```{"num":"1","url":"http://www.foo.bar/my-manga/first-page.jpg"}``` |
 
 ## Author
 * [Hakan SENER](https://senerh.github.io/)
