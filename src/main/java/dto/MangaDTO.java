@@ -1,14 +1,15 @@
 package dto;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 public class MangaDTO implements Serializable {
 
     private String slug;
+
     private String name;
-    @XmlElement(name = "last_scan")
+
     private String lastScan;
+
     private String url;
 
     public MangaDTO(String slug, String name, String lastScan, String url) {
