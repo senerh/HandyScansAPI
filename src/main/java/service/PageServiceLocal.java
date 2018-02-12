@@ -1,13 +1,13 @@
 package service;
 
-import dto.PageDTO;
+import java.util.List;
 
 import javax.ejb.Local;
-import java.io.IOException;
-import java.util.List;
+
+import dto.PageDTO;
 
 @Local
 public interface PageServiceLocal {
 
-    List<PageDTO> getPageDTOList(String manga, String scan) throws IOException;
+    List<PageDTO> getPageDTOList(String manga, String scan);
 }
