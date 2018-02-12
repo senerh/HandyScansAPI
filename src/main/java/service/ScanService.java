@@ -1,28 +1,24 @@
 package service;
 
-import dao.ScanDAO;
-import dto.MangaDTO;
-import dto.ScanDTO;
-import util.SlugUtil;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.io.IOException;
-import java.util.List;
+
+import dao.ScanDAO;
+import dto.ScanDTO;
 
 @Stateless
 public class ScanService implements ScanServiceLocal {
 
     @EJB
-    private ScanDAO scanDAO ;
+    private ScanDAO scanDAO;
 
-    public List<ScanDTO> getScanDTOList(String manga) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
-        return scanDAO.getScanDtoList(mangaDTO);
+    public List<ScanDTO> getScanDTOList(String manga) {
+        return scanDAO.getScanDtoList(manga);
     }
 
-    public ScanDTO getLastScanDTO(String manga) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
-        return scanDAO.getLastScanDto(mangaDTO);
+    public ScanDTO getLastScanDTO(String manga) {
+        return scanDAO.getLastScanDto(manga);
     }
 }

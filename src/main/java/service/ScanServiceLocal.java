@@ -1,15 +1,15 @@
 package service;
 
-import dto.ScanDTO;
+import java.util.List;
 
 import javax.ejb.Local;
-import java.io.IOException;
-import java.util.List;
+
+import dto.ScanDTO;
 
 @Local
 public interface ScanServiceLocal {
 
-    List<ScanDTO> getScanDTOList(String manga) throws IOException;
+    List<ScanDTO> getScanDTOList(String manga);
 
-    ScanDTO getLastScanDTO(String manga) throws IOException;
+    ScanDTO getLastScanDTO(String manga);
 }
