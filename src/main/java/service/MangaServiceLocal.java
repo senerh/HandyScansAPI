@@ -10,4 +10,6 @@ import dto.MangaDTO;
 public interface MangaServiceLocal {
 
     List<MangaDTO> getMangaDTOList();
+    
+    MangaDTO getMangaDTO(String manga);
 }

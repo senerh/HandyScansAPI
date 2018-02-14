@@ -23,4 +23,13 @@ public class ScanEndpoint {
     public List<ScanDTO> getScanDTOList(@PathParam("manga") String manga) {
         return scanService.getScanDTOList(manga);
     }
+
+    @GET
+    @Path("/{scan}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ScanDTO getScanDTO(
+            @PathParam("manga") String manga,
+            @PathParam("scan") String scan) {
+        return scanService.getScanDTO(manga, scan);
+    }
 }

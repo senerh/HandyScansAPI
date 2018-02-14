@@ -25,4 +25,14 @@ public class PageEndpoint {
             @PathParam("scan") String scan) {
         return pageService.getPageDTOList(manga, scan);
     }
+
+    @GET
+    @Path("/{page}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PageDTO getPageDTO(
+            @PathParam("manga") String manga,
+            @PathParam("scan") String scan,
+            @PathParam("page") String page) {
+        return pageService.getPageDTO(manga, scan, page);
+    }
 }
