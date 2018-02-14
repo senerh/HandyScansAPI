@@ -11,5 +11,5 @@ public interface ScanServiceLocal {
 
     List<ScanDTO> getScanDTOList(String manga);
 
-    ScanDTO getLastScanDTO(String manga);
+    ScanDTO getScanDTO(String manga, String scan);
 }

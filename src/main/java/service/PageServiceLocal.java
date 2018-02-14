@@ -10,4 +10,6 @@ import dto.PageDTO;
 public interface PageServiceLocal {
 
     List<PageDTO> getPageDTOList(String manga, String scan);
+
+    PageDTO getPageDTO(String manga, String scan, String page);
 }
