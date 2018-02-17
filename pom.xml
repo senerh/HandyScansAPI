@@ -7,7 +7,7 @@
     <groupId>shonen-touch</groupId>
     <artifactId>shonen-touch-api</artifactId>
     <packaging>war</packaging>
-    <version>2.0-SNAPSHOT</version>
+    <version>3.0.0</version>
 
     <build>
         <finalName>${project.artifactId}</finalName>
