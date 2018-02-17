@@ -1,11 +1,5 @@
 package dao;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ejb.Stateless;
-
 import dto.MangaDTO;
 import dto.PageDTO;
 import dto.ScanDTO;
@@ -16,10 +10,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.SlugUtil;
 
+import javax.ejb.Stateless;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Stateless
 public class LirescanDAO implements ScanDAO {
 
-    public static final String LIRE_SCAN_URL = "http://www.lirescan.net";
+    private static final String LIRE_SCAN_URL = "http://www.lirescan.net";
 
     @Override
     public List<MangaDTO> getMangaDtoList() {
@@ -44,10 +43,7 @@ public class LirescanDAO implements ScanDAO {
             String slug = SlugUtil.scanSlugToSlug(scanSlug);
             String name = e1.child(0).attr("alt");
             String url = LIRE_SCAN_URL + e1.child(0).attr("src");
-
-            Element e2 = element.child(1).child(0);
-            String[] tString = e2.text().split(" ");
-            String lastScan = tString[tString.length - 1];
+            String lastScan = getLastScanNum(slug);
 
             MangaDTO fullMangaDTO = new MangaDTO(slug, name, lastScan, url);
             mangaDTOList.add(fullMangaDTO);
@@ -73,17 +69,6 @@ public class LirescanDAO implements ScanDAO {
     }
 
     @Override
-    public ScanDTO getLastScanDto(String mangaSlug) {
-        String path = String.format("%s/", SlugUtil.slugToScanSlug(mangaSlug));
-        Document document = getDocument(path);
-        String string = document.select("select#chapitres option[selected]").text();
-        if (string == null || string.equals("")) {
-            throw new ShonenTouchGenericException(String.format("Cannot get the last scan for <~%s~>.", mangaSlug));
-        }
-        return new ScanDTO(string);
-    }
-
-    @Override
     public List<PageDTO> getPageDtoList(String mangaSlug, String scanNum) {
         List<PageDTO> pageDTOList = new ArrayList<>();
 
@@ -102,8 +87,17 @@ public class LirescanDAO implements ScanDAO {
                 pageDTOList.add(pageDTO);
             }
         }
-
         return pageDTOList;
+    }
+
+    private String getLastScanNum(String mangaSlug) {
+        String path = String.format("%s/", SlugUtil.slugToScanSlug(mangaSlug));
+        Document document = getDocument(path);
+        String lastScanNum = document.select("select#chapitres option[selected]").text();
+        if (lastScanNum == null || lastScanNum.equals("")) {
+            throw new ShonenTouchGenericException(String.format("Cannot get the last scan for '%s'.", mangaSlug));
+        }
+        return lastScanNum;
     }
 
     private String getPageUrl(String mangaSlug, String scanNum, String pageNum) {
@@ -117,7 +111,7 @@ public class LirescanDAO implements ScanDAO {
         try {
             return Jsoup.connect(url).userAgent("Mozilla").get();
         } catch (IOException e) {
-            throw new ShonenTouchGenericException(String.format("Error while retrieving the following url <~%s~>.", url), e);
+            throw new ShonenTouchGenericException(String.format("Error while retrieving the following url '%s'.", url), e);
         }
     }
 }

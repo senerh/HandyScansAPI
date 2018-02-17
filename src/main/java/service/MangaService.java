@@ -1,28 +1,27 @@
 package service;
 
-import java.util.List;
-import java.util.Optional;
+import cache.MangaCache;
+import dto.MangaDTO;
+import exception.ShonenTouchResourceNotFoundException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
-import dao.ScanDAO;
-import dto.MangaDTO;
-import exception.ShonenTouchResourceNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class MangaService implements MangaServiceLocal {
 
     @EJB
-    private ScanDAO scanDAO;
+    private MangaCache mangaCache;
 
     public List<MangaDTO> getMangaDTOList() {
-        return scanDAO.getMangaDtoList();
+        return mangaCache.getMangaDTOList();
     }
 
     @Override
     public MangaDTO getMangaDTO(String manga) {
-        Optional<MangaDTO> mangaDTO = scanDAO.getMangaDtoList().stream().filter(m -> m.getSlug().equals(manga)).findAny();
+        Optional<MangaDTO> mangaDTO = mangaCache.getMangaDTO(manga);
         if (mangaDTO.isPresent()) {
             return mangaDTO.get();
         } else {
