@@ -2,7 +2,8 @@
 if [ "$TRAVIS_BRANCH" == "master" ]
 then
   echo "Starting deployment on production"
-  curl -p --insecure "ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/" --user "$DEPLOY_USERNAME:$DEPLOY_PASSWORD" -T "target/shonen-touch-api.war" --ftp-create-dirs
+  mv target/shonen-touch-api.war target/shonen-touch-api-3-0-0.war
+  curl -p --insecure "ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/" --user "$DEPLOY_USERNAME:$DEPLOY_PASSWORD" -T "target/shonen-touch-api-3-0-0.war" --ftp-create-dirs
 elif [ "$TRAVIS_BRANCH" == "develop" ]
 then
   echo "Starting deployment on integration"

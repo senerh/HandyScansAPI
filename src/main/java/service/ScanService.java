@@ -1,28 +1,32 @@
 package service;
 
-import dao.ScanDAO;
-import dto.MangaDTO;
-import dto.ScanDTO;
-import util.SlugUtil;
+import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.io.IOException;
-import java.util.List;
+
+import dao.ScanDAO;
+import dto.ScanDTO;
+import exception.ShonenTouchResourceNotFoundException;
 
 @Stateless
 public class ScanService implements ScanServiceLocal {
 
     @EJB
-    private ScanDAO scanDAO ;
+    private ScanDAO scanDAO;
 
-    public List<ScanDTO> getScanDTOList(String manga) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
-        return scanDAO.getScanDtoList(mangaDTO);
+    public List<ScanDTO> getScanDTOList(String manga) {
+        return scanDAO.getScanDtoList(manga);
     }
 
-    public ScanDTO getLastScanDTO(String manga) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
-        return scanDAO.getLastScanDto(mangaDTO);
+    @Override
+    public ScanDTO getScanDTO(String manga, String scan) {
+        Optional<ScanDTO> scanDTO = scanDAO.getScanDtoList(manga).stream().filter(s -> s.getNum().equals(scan)).findAny();
+        if (scanDTO.isPresent()) {
+            return scanDTO.get();
+        } else {
+            throw new ShonenTouchResourceNotFoundException(String.format("The scan '%s' for manga '%s' cannot be found.", scan, manga));
+        }
     }
 }

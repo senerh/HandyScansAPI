@@ -1,15 +1,14 @@
 package service;
 
-import dao.ScanDAO;
-import dto.MangaDTO;
-import dto.PageDTO;
-import dto.ScanDTO;
-import util.SlugUtil;
+import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.io.IOException;
-import java.util.List;
+
+import dao.ScanDAO;
+import dto.PageDTO;
+import exception.ShonenTouchResourceNotFoundException;
 
 @Stateless
 public class PageService implements PageServiceLocal {
@@ -17,9 +16,17 @@ public class PageService implements PageServiceLocal {
     @EJB
     private ScanDAO scanDAO;
 
-    public List<PageDTO> getPageDTOList(String manga, String scan) throws IOException {
-        MangaDTO mangaDTO = new MangaDTO(manga, SlugUtil.slugToName(manga));
-        ScanDTO scanDTO = new ScanDTO(scan);
-        return scanDAO.getPageDtoList(mangaDTO, scanDTO);
+    public List<PageDTO> getPageDTOList(String manga, String scan) {
+        return scanDAO.getPageDtoList(manga, scan);
+    }
+
+    @Override
+    public PageDTO getPageDTO(String manga, String scan, String page) {
+        Optional<PageDTO> pageDTO = scanDAO.getPageDtoList(manga, scan).stream().filter(s -> s.getNum().equals(page)).findAny();
+        if (pageDTO.isPresent()) {
+            return pageDTO.get();
+        } else {
+            throw new ShonenTouchResourceNotFoundException(String.format("The page '%s' for manga '%s' and scan '%s' cannot be found.", page, manga, scan));
+        }
     }
 }

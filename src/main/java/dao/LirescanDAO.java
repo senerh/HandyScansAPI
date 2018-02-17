@@ -1,58 +1,40 @@
 package dao;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ejb.Stateless;
-
-import dto.FullMangaDTO;
-import dto.ImageDTO;
 import dto.MangaDTO;
 import dto.PageDTO;
 import dto.ScanDTO;
+import exception.ShonenTouchGenericException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.SlugUtil;
 
+import javax.ejb.Stateless;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Stateless
 public class LirescanDAO implements ScanDAO {
 
-    public static final String LIRE_SCAN_URL = "http://www.lirescan.net";
+    private static final String LIRE_SCAN_URL = "http://www.lirescan.net";
 
-    public List<MangaDTO> getMangaDtoList() throws IOException {
-        List<MangaDTO> mangaDTOList = new ArrayList<MangaDTO>();
+    @Override
+    public List<MangaDTO> getMangaDtoList() {
+        List<MangaDTO> mangaDTOList = new ArrayList<>();
 
-        Document document = Jsoup.connect(LIRE_SCAN_URL).userAgent("Mozilla").get();
-        Elements elements = document.select("select#mangas option");
-
-        for (Element element : elements) {
-            String scanSlug = element.attr("value");
-            scanSlug = scanSlug.split("/")[1];
-            String slug = SlugUtil.scanSlugToSlug(scanSlug);
-            MangaDTO mangaDTO = SlugUtil.slugToMangaDTO(slug);
-            mangaDTOList.add(mangaDTO);
-        }
-
-        return mangaDTOList;
-    }
-
-    public List<FullMangaDTO> getFullMangaDtoList() throws IOException {
-        List<FullMangaDTO> fullMangaDTOList = new ArrayList<FullMangaDTO>();
-
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/ace-of-diamond-lecture-en-ligne/").userAgent("Mozilla").get();
+        Document document = getDocument("ace-of-diamond-lecture-en-ligne/");
         Elements elements = document.select("div#images div");
 
         Elements aceOfDiamondElements = document.select("select#chapitres option[selected]");
         String lastScanString = aceOfDiamondElements.get(0).text();
-        FullMangaDTO aceOfDiamond = new FullMangaDTO(
+        MangaDTO aceOfDiamond = new MangaDTO(
                 "ace-of-diamond",
                 "Ace Of Diamond",
                 lastScanString,
-                "http://www.lirescan.net/images/mangas/ace-of-diamond.jpg");
-        fullMangaDTOList.add(aceOfDiamond);
+                "http://www.lirescan.net/assets/images/mangas/ace-of-diamond.jpg");
+        mangaDTOList.add(aceOfDiamond);
 
         for (Element element : elements) {
             Element e1 = element.child(0);
@@ -61,22 +43,21 @@ public class LirescanDAO implements ScanDAO {
             String slug = SlugUtil.scanSlugToSlug(scanSlug);
             String name = e1.child(0).attr("alt");
             String url = LIRE_SCAN_URL + e1.child(0).attr("src");
+            String lastScan = getLastScanNum(slug);
 
-            Element e2 = element.child(1).child(0);
-            String[] tString = e2.text().split(" ");
-            String lastScan = tString[tString.length - 1];
-
-            FullMangaDTO fullMangaDTO = new FullMangaDTO(slug, name, lastScan, url);
-            fullMangaDTOList.add(fullMangaDTO);
+            MangaDTO fullMangaDTO = new MangaDTO(slug, name, lastScan, url);
+            mangaDTOList.add(fullMangaDTO);
         }
 
-        return fullMangaDTOList;
+        return mangaDTOList;
     }
 
-    public List<ScanDTO> getScanDtoList(MangaDTO mangaDTO) throws IOException {
-        List<ScanDTO> scanDTOList = new ArrayList<ScanDTO>();
+    @Override
+    public List<ScanDTO> getScanDtoList(String mangaSlug) {
+        List<ScanDTO> scanDTOList = new ArrayList<>();
 
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/").userAgent("Mozilla").get();
+        String path = String.format("%s/", SlugUtil.slugToScanSlug(mangaSlug));
+        Document document = getDocument(path);
         Elements elements = document.select("select#chapitres option");
 
         for (Element element : elements) {
@@ -87,36 +68,50 @@ public class LirescanDAO implements ScanDAO {
         return scanDTOList;
     }
 
-    public ScanDTO getLastScanDto(MangaDTO mangaDTO) throws IOException {
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/").userAgent("Mozilla").get();
-        String string = document.select("select#chapitres option[selected]").text();
-        if (string == null || string.equals("")) {
-            throw new IOException("Cannot get the last scan for <~" + mangaDTO + "~>. The selected string is empty.");
-        }
-        return new ScanDTO(string);
-    }
+    @Override
+    public List<PageDTO> getPageDtoList(String mangaSlug, String scanNum) {
+        List<PageDTO> pageDTOList = new ArrayList<>();
 
-    public List<PageDTO> getPageDtoList(MangaDTO mangaDTO, ScanDTO scanDTO) throws IOException {
-        List<PageDTO> pageDTOList = new ArrayList<PageDTO>();
-
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/" + scanDTO.getNum() + "/").userAgent("Mozilla").get();
+        String path = String.format("%s/%s/", SlugUtil.slugToScanSlug(mangaSlug), scanNum);
+        Document document = getDocument(path);
         Elements elements = document.select("nav#pagination a:not([id],[style])");
 
-        pageDTOList.add(new PageDTO("1"));
+        String pageNum = "1";
+        String pageUrl = getPageUrl(mangaSlug, scanNum, pageNum);
+        pageDTOList.add(new PageDTO(pageNum, pageUrl));
         for (Element element : elements) {
-            PageDTO pageDTO = new PageDTO(element.text());
-            if (!getImageDto(mangaDTO, scanDTO, pageDTO).getUrl().contains("__Add__")) {
+            pageNum = element.text();
+            pageUrl = getPageUrl(mangaSlug, scanNum, pageNum);
+            if (!pageUrl.contains("__Add__")) {
+                PageDTO pageDTO = new PageDTO(pageNum, pageUrl);
                 pageDTOList.add(pageDTO);
             }
         }
-
         return pageDTOList;
     }
 
-    public ImageDTO getImageDto(MangaDTO mangaDTO, ScanDTO scanDTO, PageDTO pageDTO) throws IOException {
-        Document document = Jsoup.connect(LIRE_SCAN_URL + "/" + SlugUtil.slugToScanSlug(mangaDTO.getSlug()) + "/" + scanDTO.getNum() + "/" + pageDTO.getNum()).userAgent("Mozilla").get();
-        String url = LIRE_SCAN_URL + document.select("a#imglink img").attr("src");
-        ImageDTO imageDTO = new ImageDTO(url);
-        return imageDTO;
+    private String getLastScanNum(String mangaSlug) {
+        String path = String.format("%s/", SlugUtil.slugToScanSlug(mangaSlug));
+        Document document = getDocument(path);
+        String lastScanNum = document.select("select#chapitres option[selected]").text();
+        if (lastScanNum == null || lastScanNum.equals("")) {
+            throw new ShonenTouchGenericException(String.format("Cannot get the last scan for '%s'.", mangaSlug));
+        }
+        return lastScanNum;
+    }
+
+    private String getPageUrl(String mangaSlug, String scanNum, String pageNum) {
+        String path = String.format("%s/%s/%s", SlugUtil.slugToScanSlug(mangaSlug), scanNum, pageNum);
+        Document document = getDocument(path);
+        return LIRE_SCAN_URL + document.select("a#imglink img").attr("src");
+    }
+
+    private Document getDocument(String path) {
+        String url = LIRE_SCAN_URL + "/" + path;
+        try {
+            return Jsoup.connect(url).userAgent("Mozilla").get();
+        } catch (IOException e) {
+            throw new ShonenTouchGenericException(String.format("Error while retrieving the following url '%s'.", url), e);
+        }
     }
 }
