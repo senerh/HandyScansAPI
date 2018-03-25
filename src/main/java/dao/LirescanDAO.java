@@ -82,7 +82,7 @@ public class LirescanDAO implements ScanDAO {
         for (Element element : elements) {
             pageNum = element.text();
             pageUrl = getPageUrl(mangaSlug, scanNum, pageNum);
-            if (!pageUrl.contains("__Add__")) {
+            if (!pageUrl.contains("__")) {
                 PageDTO pageDTO = new PageDTO(pageNum, pageUrl);
                 pageDTOList.add(pageDTO);
             }
