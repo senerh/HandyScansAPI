@@ -10,5 +10,5 @@ then
   mv target/shonen-touch-api.war target/shonen-touch-api-dev.war
   curl -p --insecure "ftp://$DEPLOY_HOST/$DEPLOY_REMOTEDIR/" --user "$DEPLOY_USERNAME:$DEPLOY_PASSWORD" -T "target/shonen-touch-api-dev.war" --ftp-create-dirs
 else
-  echo "No deployment for branch: $TRAVIS_BRANCH."
+  echo "No deployment for branch $TRAVIS_BRANCH."
 fi
