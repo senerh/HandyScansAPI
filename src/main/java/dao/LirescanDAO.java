@@ -1,5 +1,11 @@
 package dao;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.Stateless;
+
 import dto.MangaDTO;
 import dto.PageDTO;
 import dto.ScanDTO;
@@ -9,11 +15,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.SlugUtil;
-
-import javax.ejb.Stateless;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Stateless
 public class LirescanDAO implements ScanDAO {
@@ -107,7 +108,7 @@ public class LirescanDAO implements ScanDAO {
     }
 
     private Document getDocument(String path) {
-        String url = LIRE_SCAN_URL + "/" + path;
+        String url = String.format("%s/%s", LIRE_SCAN_URL, path);
         try {
             return Jsoup.connect(url).userAgent("Mozilla").get();
         } catch (IOException e) {

@@ -1,19 +1,20 @@
 package cache;
 
-import dao.ScanDAO;
-import dto.MangaDTO;
+import static java.util.stream.Collectors.*;
 
-import javax.ejb.EJB;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import javax.ejb.EJB;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
+import javax.ejb.Singleton;
+
+import dao.ScanDAO;
+import dto.MangaDTO;
 
 @Singleton
 public class MangaCache {
@@ -26,7 +27,7 @@ public class MangaCache {
     @Lock(LockType.READ)
     public List<MangaDTO> getMangaDTOList() {
         return mangaBySlug.values().stream()
-                .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
+                .sorted(Comparator.comparing(MangaDTO::getName))
                 .collect(toList());
     }
 

@@ -1,12 +1,18 @@
 package util;
 
-public class SlugUtil {
+public final class SlugUtil {
+
+    private static final String SUFFIX = "-lecture-en-ligne";
+
+    private SlugUtil() {
+        //hide public constructor
+    }
 
     public static String slugToScanSlug(String slug) {
-        return slug + "-lecture-en-ligne";
+        return slug + SUFFIX;
     }
 
     public static String scanSlugToSlug(String lirescanSlug) {
-        return lirescanSlug.replace("-lecture-en-ligne", "");
+        return lirescanSlug.replace(SUFFIX, "");
     }
 }
